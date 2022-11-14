@@ -40,6 +40,8 @@ class UserManager(BaseUserManager):
         return user
 
 class User(AbstractUser):
+    username = None
+    
     objects = UserManager()
     MARRIED = 'M'
     DIVORCIED = 'D'
@@ -50,6 +52,10 @@ class User(AbstractUser):
         (DIVORCIED, 'Divorciado'),
         (SINGLE, 'Solteiro'),
     ]
+    USERNAME_FIELD = 'email'
+    email = models.EmailField('E-mail', unique=True)
+    REQUIRED_FIELDS = []
+
     role = models.ForeignKey(Role, on_delete=models.CASCADE)
     photo = models.ImageField(upload_to='core/covers/%Y/%m/%d/', blank=True, default='', verbose_name='Foto de perfil')
     marital_status = models.CharField(max_length=1, choices=MARITAL_STATUS_CHOICES, default=SINGLE, verbose_name='Status civil')
