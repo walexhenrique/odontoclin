@@ -22,10 +22,10 @@ class AttendanceSerializer(serializers.ModelSerializer):
 
     def validate(self, attrs):
         if attrs.get('doctor') is None:
-            self.validations.append('Doutor precisa ser especificado na criação do atendimento')
+            self.validations.append('Doutor precisa ser especificado no atendimento')
         
         if attrs.get('client') is None:
-            self.validations.append('Cliente precisa ser especificado na criação do atendimento')
+            self.validations.append('Cliente precisa ser especificado no atendimento')
 
         super_validate = super().validate(attrs)
 

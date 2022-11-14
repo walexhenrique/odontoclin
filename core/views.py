@@ -1,4 +1,6 @@
-from rest_framework.generics import ListCreateAPIView
+from rest_framework import status
+from rest_framework.generics import (ListCreateAPIView,
+                                     RetrieveUpdateDestroyAPIView)
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -27,3 +29,16 @@ class AttendanceAPIv1List(ListCreateAPIView):
             qs = qs.filter(is_finished=self.get_finished())
         
         return qs
+
+class AttendanceAPIv1Detail(RetrieveUpdateDestroyAPIView):
+    queryset = Attendance.objects.all()
+    serializer_class = AttendanceSerializer
+    pagination_class = PageNumberPagination
+
+    def delete(self, request, *args, **kwargs):
+        instance = self.get_object()
+        instance.is_finished = True
+        instance.save()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+

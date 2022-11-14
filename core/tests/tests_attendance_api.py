@@ -1,6 +1,7 @@
 from django.urls import reverse
 from rest_framework.test import APITestCase
 
+from ..models import Attendance
 from .tests_attendance_api_base import AttendanceMixin
 
 
@@ -58,6 +59,16 @@ class AttendanceAPIv1Test(APITestCase, AttendanceMixin):
         response = self.client.get(f'{url}?finished=false')
         qtd_load_attendance = len(response.data.get('results'))
         self.assertEqual(qtd_load_attendance, 5)
+    
+    def test_attendance_api_detail_delete_change_status_finished_and_status_code_204(self):
+        url = reverse('core:attendance-detail', kwargs={'pk': 1})
+        self.create_attendance(self.doctor, self.generic_client, is_finished=False)
+
+        response = self.client.delete(url)
+        self.assertEqual(response.status_code, 204)
+
+        attendance_finished_exists = Attendance.objects.filter(is_finished=True).exists()
+        self.assertTrue(attendance_finished_exists)
 
 
 
