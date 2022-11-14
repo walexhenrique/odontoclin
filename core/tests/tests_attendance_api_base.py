@@ -34,7 +34,7 @@ class AttendanceMixin:
             is_finished=is_finished,
         )
 
-    def make_attendace_in_batch(self, qtd: int = 10):
+    def make_attendace_in_batch(self, qtd: int = 10, is_finished = False):
         doctor = self.create_user(
             first_name='Doutor aragão',
             last_name='pinheiro', 
@@ -45,7 +45,7 @@ class AttendanceMixin:
 
         attendances = []
         for i in range(qtd):
-            attendances.append(self.create_attendance(doctor, client))
+            attendances.append(self.create_attendance(doctor, client, is_finished))
         
         return attendances
         
