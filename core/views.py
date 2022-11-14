@@ -1,3 +1,12 @@
-from django.shortcuts import render
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
-# Create your views here.
+from .models import Attendance
+from .serializers import AttendanceSerializer
+
+
+class AttendanceList(APIView):
+    def get(self, request):
+        attendances = Attendance.objects.all()
+        serializer = AttendanceSerializer(attendances, many=True)
+        return Response(serializer.data)
